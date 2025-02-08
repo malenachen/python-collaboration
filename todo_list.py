@@ -6,12 +6,12 @@ Created on Fri Feb  7 20:38:36 2025
 """
 
 task_list = []
-command_list = ["add", "view", "complete", "remove", "done"]
+command_list = ["add", "view", "complete", "remove", "done, save"]
 
 while True:
     print("========================================================")
     user_input = input("""Which of the following tasks do you want to do? 
-Type add, view, complete, remove, done\n""").lower()
+Type add, view, complete, remove, done, save\n""").lower()
     # checks if input is valid command
     if user_input not in command_list:
         print("Unknown command found, please use one of the following: " + str(command_list))
@@ -60,7 +60,14 @@ Type add, view, complete, remove, done\n""").lower()
         print("Task succesfully removed!")
     
     # breaks while loop if user types done
-    if user_input == "done":
+    if user_input == "done":         
         break
+    
+    if user_input =="save":
+        # creates file named todo_list.txt and writes out task_list list
+        with open("todo_list.txt", 'w') as file:
+            file.write(str(task_list))
+            print("To do list saved")
+    
         
         
