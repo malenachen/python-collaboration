@@ -98,16 +98,19 @@ class GamePicker:
         self.show_cart()
 
     def show_cart(self):
+        subtotal = 0
 #Method to sow what is inside the cart
         if self.cart:
             
             print("\nYour cart has these games!")
             for item in self.cart: 
-                print(item["title"] + " ($" + str(item["price"]) + ")")  
+                print(item["title"] + " ($" + str(item["price"]) + ")")
+                subtotal += item["price"]
                 #Having a title and a price or an item means that it has something into the cart. Therefore, add to cart
         else:
             print("\nThere is nothing inside your cart!")  
 #If no price or title inside the cart, nothing is inside thecart.
+        print("Subtotal: $", subtotal)
 
 #==============================================================================
 
