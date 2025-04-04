@@ -10,51 +10,8 @@ TO DO:
 
 '''
 
-import random  
-
-# Holds string values for the code-dictonary
-games = {
-    #Holds dictonary values of the code
-    "ACTION": [
-        {"title": "Grand Theft Auto V", "price": 59.99, "developer": "Rockstar Games"},
-        {"title": "Assassin's Creed Odyssey", "price": 49.99, "developer": "Ubisoft"},
-        {"title": "Spider-Man", "price": 49.99, "developer": "Insomniac Games"},
-        {"title": "Red Dead Redemption 2", "price": 59.99, "developer": "Rockstar Games"},
-        {"title": "Mortal Kombat 11", "price": 59.99, "developer": "NetherRealm Studios"},
-        {"title": "God of War", "price": 59.99, "developer": "Santa Monica Studio"}
-    ],
-    "ADVENTURE": [
-        {"title": "The Last of Us", "price": 59.99, "developer": "Naughty Dog"},
-        {"title": "Zelda: Breath of the Wild", "price": 59.99, "developer": "Nintendo"},
-        {"title": "Tomb Raider", "price": 49.99, "developer": "Crystal Dynamics"},
-        {"title": "Horizon Zero Dawn", "price": 59.99, "developer": "Guerrilla Games"},
-        {"title": "Uncharted 4", "price": 59.99, "developer": "Naughty Dog"},
-        {"title": "The Witcher 3: Wild Hunt", "price": 49.99, "developer": "CD Projekt Red"}
-    ],
-    "RPG": [
-        {"title": "Final Fantasy VII Remake", "price": 59.99, "developer": "Square Enix"},
-        {"title": "Persona 5", "price": 49.99, "developer": "Atlus"},
-        {"title": "The Elder Scrolls V: Skyrim", "price": 39.99, "developer": "Bethesda Game Studios"},
-        {"title": "Dark Souls III", "price": 59.99, "developer": "FromSoftware"},
-        {"title": "Cyberpunk 2077", "price": 59.99, "developer": "CD Projekt Red"},
-        {"title": "Dragon Age: Inquisition", "price": 39.99, "developer": "BioWare"}
-    ],
-    "SHOOTER": [
-        {"title": "Call of Duty: Warzone", "price": 0.00, "developer": "Activision"},
-        {"title": "DOOM Eternal", "price": 59.99, "developer": "id Software"},
-        {"title": "Overwatch", "price": 39.99, "developer": "Blizzard Entertainment"},
-        {"title": "Battlefield V", "price": 59.99, "developer": "EA DICE"},
-        {"title": "Apex Legends", "price": 0.00, "developer": "Respawn Entertainment"},
-        {"title": "Fortnite", "price": 0.00, "developer": "Epic Games"},
-        {"title": "Valorant", "price": 0.00, "developer": "Riot Games"}
-    ],
-    "STRATEGY": [
-        {"title": "Civilization VI", "price": 59.99, "developer": "Firaxis Games"},
-        {"title": "Starcraft II", "price": 39.99, "developer": "Blizzard Entertainment"},
-        {"title": "Age of Empires IV", "price": 59.99, "developer": "Relic Entertainment"},
-        {"title": "Total War: Warhammer III", "price": 59.99, "developer": "Creative Assembly"}
-    ]
-}
+import random
+from Games import games   # import dictionary with all the games
 
 class GamePicker:
     genres = ["ACTION", "ADVENTURE", "RPG", "SHOOTER", "STRATEGY"]
@@ -64,6 +21,8 @@ class GamePicker:
         
         self.cart = []  
         # Create a variable that holds the values above. THe user will select values from above and add it to this list
+        self.trash = []
+        # variable array to store games user says no to so they won't be recommended again
 
     def pick_game(self, genre):       
         
@@ -88,7 +47,9 @@ class GamePicker:
                 print("Game added to your cart.") #Print game addded_to cart
                 break
             elif add_to_cart == "no":
-                print("Game not added to your cart.")   #Print game not added to cart
+                print("Game not added to your cart.")
+                #Print game not added to cart
+                self.trash.append(selected_game)
             else:
                 print("Please enter a valid command.")
                 keep_game = True  # will keep current selected game when looping back to ask yes/no again
