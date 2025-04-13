@@ -19,59 +19,117 @@ class GamePicker:
     
     def __init__(self):
         
+        # Create a variable that holds the values above. The user will select values from above and add it to this list
         self.cart = []  
-        # Create a variable that holds the values above. THe user will select values from above and add it to this list
-        self.trash = []
+        
         # variable array to store games user says no to so they won't be recommended again
+        self.trash = []
+        
 
     def pick_game(self, genre):       
         
-        keep_game = False   # boolean to keep current game selected if user types something other than provided commands.
+        keep_game = False   # boolean to keep current game selected if user types something other than valid commands.
         
         while True:
+            
             if not keep_game:   # changes selected game
-                selected_game = random.choice(games[genre])
+                if len(games[genre]) == 0:
+                    print("\nThere are no more", genre, "games to recommend.")
+                    break
+                else:
+                    selected_game = random.choice(games[genre])
             keep_game = False   # boolean makes game reset next iterative process
-            print("========================================================")
-            print("Game: " + selected_game["title"]) 
-            # Show the game title,price, name of developer
-            print("Price: " + str(selected_game["price"])) 
-            #Has to be a str value because the team was unable to print an int value other than this fashion.
-            print("Developer: " + selected_game["developer"])
-    
-            # Ask the user if they want to add the game to their cart
-            add_to_cart = input("Add this game to your cart? Type yes or no.\n").lower()
+            if selected_game not in self.trash:
+                print("========================================================")
+                print("Game: " + selected_game["title"]) 
+                # Show the game title,price, name of developer
+                print("Price: " + str(selected_game["price"])) 
+                #Has to be a str value because the team was unable to print an int value other than this fashion.
+                print("Developer: " + selected_game["developer"])
+                    
+                # Ask the user if they want to add the game to their cart
+                add_to_cart = input("Add this game to your cart? Type yes or no, or exit to change the genre.\n").lower()
+                
+                
+            # checks whether user wants to add item to cart or exit entered genre
             if add_to_cart == "yes":
                 # If the user says "yes"
                 self.cart.append(selected_game)  
                 print("Game added to your cart.") #Print game addded_to cart
+                games[genre].remove(selected_game)
                 break
             elif add_to_cart == "no":
-                print("Game not added to your cart.")
-                #Print game not added to cart
                 self.trash.append(selected_game)
+                games[genre].remove(selected_game)
+            elif add_to_cart == "exit":
+                break
             else:
                 print("Please enter a valid command.")
                 keep_game = True  # will keep current selected game when looping back to ask yes/no again
-              
 
-   
-        self.show_cart()
 
-    def show_cart(self):
+    # method to show what is inside the cart
+    def show_cart(self, edit = True):
         subtotal = 0
-#Method to sow what is inside the cart
         if self.cart:
-            
             print("\nYour cart has these games!")
-            for item in self.cart: 
-                print(item["title"] + " ($" + str(item["price"]) + ")")
+            for i, item in enumerate(self.cart, 1): 
+                print(str(i) + ". " + item["title"] + " ($" + str(item["price"]) + ")")
                 subtotal += item["price"]
                 #Having a title and a price or an item means that it has something into the cart. Therefore, add to cart
+            
+            # is false when show cart is run in the "done" command
+            if edit == False:
+                return
+            
+            # allows user to remove items from cart. does not run if edit = false.
+            while True:
+                re_add = input("\nIf you would like to add a remove a game from your cart, enter the corresponding number. If not, enter exit\n")
+                
+                if re_add.lower() == "exit":
+                    break
+                # checks if input is only digits
+                elif re_add.isdigit():
+                    index = int(re_add) - 1
+                    if 0 <= index < len(self.cart): # makes sure that entered number is valid
+                        selected_game = self.cart.pop(index)
+                        self.trash.append(selected_game)
+                        print(selected_game["title"], "has been removed from your cart.")
+                        break
+                    else:
+                        print("Please enter a valid number.")
+                else:
+                    print("Please enter a valid command.")
         else:
-            print("\nThere is nothing inside your cart!")  
-#If no price or title inside the cart, nothing is inside thecart.
-        print("Subtotal: $", subtotal)
+            print("\nThere is nothing inside your cart!")
+            
+            
+    # method to show what is in the trash      
+    def show_trash(self):
+        if self.trash:
+            print("\nYour trash has these games!")
+            for i, item in enumerate(self.trash, 1): 
+                print(str(i) + ". " + item["title"] + " ($" + str(item["price"]) + ")")
+                
+            while True:
+                re_add = input("\nIf you would like to add a game back to your cart, enter the corresponding number. If not, enter exit\n")
+                
+                if re_add.lower() == "exit":
+                    break
+                # checks if input is only digits
+                elif re_add.isdigit():
+                    index = int(re_add) - 1
+                    if 0 <= index < len(self.trash): # makes sure that entered number is valid
+                        selected_game = self.trash.pop(index)
+                        self.cart.append(selected_game)
+                        print(selected_game["title"], "has been moved to your cart.")
+                        break
+                    else:
+                        print("Please enter a valid number.")
+                else:
+                    print("Please enter a valid command.")
+        else:
+            print("\nThere is nothing inside your trash!")
 
 #==============================================================================
 
@@ -80,26 +138,30 @@ def main():
     
     while True:
         print("========================================================")
+        
+        # loops through genres and prints all of them to user
         for i in range(len(GamePicker.genres)):  
-            # The for loop will loop through the entire list 
             print(str(i+1) + ". " + GamePicker.genres[i]) 
-            # Print all the options to the user
             
-        # This is a method called pick_game. 
-        user_input = input("Pick a game genre, and the computer will recommend you a game. Type done when you are finished adding games.\n").upper()
+        user_input = input("Pick a game genre, and the computer will recommend you a game. Type cart to view cart, trash to view games you said no to, or done when you are finished adding games.\n").upper()
 
-        # First check if genre is valid
+        # check which command/genre user puts
         if user_input == "DONE":
-            print("You have finished adding games to your cart.")   # Probably will create a more solidified checkout system later
-            picker.show_cart()
+            print("You have finished adding games to your cart.")
+            picker.show_cart(edit = False)
             break
+        elif user_input == "CART":      #show cart
+            picker.show_cart()
+        elif user_input == "TRASH":     # show trash
+            picker.show_trash()
         elif user_input not in GamePicker.genres:   # Check if genre is in list of genres.
             print("Please enter a valid genre.")    # If not, asks user for a valid genre.
             continue
         else:
             selected_genre = user_input
                 # Create a variable that holds the genre choice
-        picker.pick_game(selected_genre)
+            picker.pick_game(selected_genre)
+
 
 #==============================================================================
 
