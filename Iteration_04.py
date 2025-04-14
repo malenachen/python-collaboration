@@ -1,14 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-'''
-TO DO:
-    * make code not be able to recommend same game more than once
-    * put games into imported file
-    * add actual checkout feature
-    * create command to leave category and enter different game genre
-
-'''
 
 import random
 from Games import games   # import dictionary with all the games
