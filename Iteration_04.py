@@ -77,7 +77,8 @@ class GamePicker:
                 print(str(i) + ". " + item["title"] + " ($" + str(item["price"]) + ")")
                 subtotal += item["price"]
                 #Having a title and a price or an item means that it has something into the cart. Therefore, add to cart
-            
+            print("\nSubtotal: $", subtotal)
+                
             # is false when show cart is run in the "done" command
             if edit == False:
                 return
