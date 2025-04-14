@@ -39,16 +39,15 @@ class GamePicker:
                 else:
                     selected_game = random.choice(games[genre])
             keep_game = False   # boolean makes game reset next iterative process
-            if selected_game not in self.trash:
-                print("========================================================")
-                print("Game: " + selected_game["title"]) 
-                # Show the game title,price, name of developer
-                print("Price: " + str(selected_game["price"])) 
-                #Has to be a str value because the team was unable to print an int value other than this fashion.
-                print("Developer: " + selected_game["developer"])
+            print("========================================================")
+            print("Game: " + selected_game["title"]) 
+            # Show the game title,price, name of developer
+            print("Price: " + str(selected_game["price"])) 
+            #Has to be a str value because the team was unable to print an int value other than this fashion.
+            print("Developer: " + selected_game["developer"])
                     
-                # Ask the user if they want to add the game to their cart
-                add_to_cart = input("Add this game to your cart? Type yes or no, or exit to change the genre.\n").lower()
+            # Ask the user if they want to add the game to their cart
+            add_to_cart = input("Add this game to your cart? Type yes or no, or exit to change the genre.\n").lower()
                 
                 
             # checks whether user wants to add item to cart or exit entered genre
